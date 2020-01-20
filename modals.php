@@ -66,7 +66,6 @@
                         <label for="pwd">Enter E-mail:</label>
                         <input type="text" class="form-control" id="pwd" name = "email">
                       </div>
-                  
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -77,6 +76,33 @@
 
   </div>
 </div>
+
+
+<!-- PHP Register Modal -->
+<?php
+    if(isset($_POST["register"])) {
+        $username = $userClass->checkInput($_POST["username"]);
+        $password = $userClass->checkInput($_POST["password"]);
+        $email = $userClass->checkInput($_POST["email"]);
+    }
+
+    if(empty($username) || empty($password) || empty($email)) {
+        $error = true;
+    }
+    else {
+        $userClass->register($username, $password, $email);
+        unset($error);
+    }
+
+    if(isset($error) && isset($_POST["register"])) {
+        echo "<script>
+            $(document).ready(function() {
+                $('#errorModal').modal('show');
+            });
+        </script>";
+    }
+?>
+
 
 
 <!--error modal-->
