@@ -17,9 +17,10 @@ class Users {
     public function register($username, $password, $email) {
         $document = $this->collection_users->insertOne([
             "username"=>$username,
-            "password"=>$password,
+            "password"=>md5($password),
             "email"=>$email,
-            "admin"=>"no"
+            "admin"=>"no",
+            "created_at"=>new MongoDB\BSON\UTCDateTime()
         ]);
         
         $_SESSION["user_id"] = $document->getInsertedId();
@@ -38,6 +39,38 @@ class Users {
         $_SESSION = array();
         session_destroy();
         header("Location: index.php");
+    }
+    
+    public function login($username, $password) {
+        $document = $this->collection_users->findOne(
+            ["username"=>$username, "password"=>md5($password)],
+            ["projection"=>["_id"=>1]]
+        );
+        
+        if(!empty($document->_id)) {
+            // start up regular user session
+            $_SESSION["user_id"] = $document->_id;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    public function checkAdmin($username, $password) {
+        $document = $this->collection_users->findOne(
+            ["username"=>$username, "password"=>md5($password)],
+            ["projection"=>["_id"=>1, "admin"=>1]]
+        );
+        
+        if(!empty($document->_id)) {
+            if($document->admin == "yes") {
+                // start up admin session
+                $_SESSION["admin_id"] = $document->_id;
+            }
+        }
+        else {
+            return false;
+        }
     }
 }
 ?>
