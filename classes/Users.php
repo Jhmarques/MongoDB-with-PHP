@@ -24,5 +24,20 @@ class Users {
         
         $_SESSION["user_id"] = $document->getInsertedId();
     }
+    
+    public function userData($userId) {
+        // retrieving an object with properties of the document searched by ID when the ID was created automatically for us by Mongo server
+        $document = $this->collection_users->findOne([
+            "_id"=>new MongoDB\BSON\ObjectID($userId)
+        ]);
+        
+        return $document;
+    }
+    
+    public function logout() {
+        $_SESSION = array();
+        session_destroy();
+        header("Location: index.php");
+    }
 }
 ?>
