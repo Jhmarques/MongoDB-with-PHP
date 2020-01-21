@@ -17,7 +17,7 @@
     $document = $collection_users->find([], ["projection"=>["_id"=>0, "admin"=>0], 'limit'=>2]);
     foreach($document as $val) {
         echo "<pre>";
-        var_dump($val);
+        //var_dump($val);
         echo "</pre>";    
     }
 
@@ -26,5 +26,12 @@
             "bookCategory"=>"test"],
             ["projection"=>["_id"=>1]]);
     
-    var_dump($document);
+    //var_dump($document);
+    $query = $collection_books->find([], ["projection"=>["bookCategory"=>1, "_id"=>0]]);
+    $distinct = $collection_books->distinct("bookCategory", $query);
+
+    foreach($distinct as $val) {
+        var_dump($val);
+    }
+
 ?>

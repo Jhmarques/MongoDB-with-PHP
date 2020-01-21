@@ -13,5 +13,7 @@
                 $_FILES["cover_img"]["tmp_name"]
             );
         }
+        
+        header("Location: ../index.php");
     }
 ?>
