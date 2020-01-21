@@ -21,5 +21,10 @@
         echo "</pre>";    
     }
 
-    //var_dump($document);
+    $document = $collection_books->findOne([
+            "bookTitle"=>"test",
+            "bookCategory"=>"test"],
+            ["projection"=>["_id"=>1]]);
+    
+    var_dump($document);
 ?>

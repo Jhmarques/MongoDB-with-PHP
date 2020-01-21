@@ -13,6 +13,7 @@
 
     // Connection to the collection users
     $collection_users = $db->users;
+    $collection_books = $db->books;
 
     $userClass = new Users($collection_users);
 
